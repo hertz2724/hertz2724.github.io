@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>JavaScript Form validation</title>
+<link rel="stylesheet" href="/examples/css/form-style.css">
+<script>
+function printError(elemId, hintMsg) {
+    document.getElementById(elemId).innerHTML = hintMsg;
+}
+
+function validateForm() 
+{
+
+    var name = document.contactForm.name.value;
+    var email = document.contactForm.email.value;
+    var mobile = document.contactForm.mobile.value;
+    var country = document.contactForm.country.value;
+    var gender = document.contactForm.gender.value;
+    var hobbies = [];
+    var checkboxes = document.getElementsByName("hobbies[]");
+    for(var i=0; i < checkboxes.length; i++) {
+        if(checkboxes[i].checked) {
+   
+            hobbies.push(checkboxes[i].value);
+        }
+    }
+    
+    var nameErr = emailErr = mobileErr = countryErr = genderErr = true;
+    var regex1 = /^[a-zA-Z\s]+$/;
+    var regex2 = /^\S+@\S+\.\S+$/;
+    var regex3 = /^[1-9]\d{9}$/;
+    do
+    {
+        if(nameErr == true)
+        {
+            if(name == "") 
+            {
+                printError("nameErr", "Please enter your name");
+                a=0;
+            }                  
+            else if(regex1.test(name) === false) 
+            {
+                printError("nameErr", "Please enter a valid name");
+                a=0;
+            } 
+            else if(regex1.test(name) === true)
+            {
+                printError("nameErr", "");
+                nameErr = false;
+                a=1;
+            }
+        }
+        else if(emailErr == true)
+        {
+            if(email == "") 
+            {
+                printError("emailErr", "Please enter your email address");
+                b=0;
+            } 
+            else if(regex2.test(email) === false) 
+            {
+                printError("emailErr", "Please enter a valid email address");
+                b=0;
+            } 
+            else if(regex2.test(email) === true)
+            {
+                printError("emailErr", "");
+                emailErr = false;
+                b=1; 
+            }
+        }
+        else if(mobileErr == true)
+        {
+            if(mobile == "") 
+            {
+                printError("mobileErr", "Please enter your mobile number");
+                c=0;
+            } 
+            else if(regex3.test(mobile) === false) 
+            {
+                printError("mobileErr", "Please enter a valid 10 digit mobile number");
+                c=0;
+            } 
+            else if(regex3.test(mobile) === true) 
+            {
+                printError("mobileErr", "");
+                mobileErr = false;
+                c=1;
+            }
+        }
+        else if(countryErr == true)
+        {
+            if(country == "Select") 
+            {
+                printError("countryErr", "Please select your country");
+                d=0;
+            } 
+            else if(country != "Select")
+            {
+                printError("countryErr", "");
+                countryErr = false;
+                d=1;
+            }
+        }
+        else if(genderErr == true)
+        {
+            if(gender == "") 
+            {
+                printError("genderErr", "Please select your gender");
+                e=0;;
+            } 
+            else if(gender != "")
+            {
+                printError("genderErr", "");
+                genderErr = false;
+                e=1;
+            }
+        }
+        var s = a+b+c+d+e;
+        if(s==5) 
+        {
+            var dataPreview = "You've entered the following details: \n" +
+                          "Full Name: " + name + "\n" +
+                          "Email Address: " + email + "\n" +
+                          "Mobile Number: " + mobile + "\n" +
+                          "Country: " + country + "\n" +
+                          "Gender: " + gender + "\n";
+            if(hobbies.length) 
+            {
+                dataPreview += "Hobbies: " + hobbies.join(", ");
+            }
+            alert(dataPreview);
+        }
+        else
+        {
+            return false;
+        }
+    }
+    while(s<5);  
+};
+</script>
+</head>
+<body>
+<form name="contactForm" onsubmit="return validateForm()" action="/examples/actions/confirmation.php" method="post">
+    <h1 style="text-align: center">REGISTRATION FORM</h1>
+    <div class="row" style="text-align: center; box-sizing=border-box; width: 90%; border: 100px dark blue; float: left; align content: center;
+                align items: center">
+        <label>Full Name</label>
+        <input type="text" name="name">
+        <div class="error" id="nameErr"></div>
+    </div>
+    <div class="row" style="text-align: center; box-sizing=border-box; width: 90%; border: 100px dark blue; float: left; align content: center;
+                align items: center">
+        <label>Email Address</label>
+        <input type="text" name="email">
+        <div class="error" id="emailErr"></div>
+    </div>
+     <div class="row" style="text-align: center; box-sizing=border-box; width: 90%; border: 100px dark blue; float: left; align content: center;
+                align items: center">
+        <label>Mobile Number</label>
+        <input type="text" name="mobile" maxlength="10">
+        <div class="error" id="mobileErr"></div>
+    </div>
+    <div class="row" style="text-align: center; box-sizing=border-box; width: 90%; border: 100px dark blue; float: left; align content: center;
+                align items: center">
+        <label>Country</label>
+        <select name="country">
+            <option>Select</option>
+            <option>Australia</option>
+            <option>India</option>
+            <option>United States</option>
+            <option>United Kingdom</option>
+        </select>
+        <div class="error" id="countryErr"></div>
+    </div>
+    <div class="row" style="text-align: center; box-sizing=border-box; width: 90%; border: 100px dark blue; float: left; align content: center;
+                align items: center">
+        <label>Gender</label>
+        <div class="form-inline">
+            <label><input type="radio" name="gender" value="male"> Male</label>
+            <label><input type="radio" name="gender" value="female"> Female</label>
+        </div>
+        <div class="error" id="genderErr"></div>
+    </div>
+    <div class="row" style="text-align: center; box-sizing=border-box; width: 90%; border: 100px dark blue; float: left; align content: center;
+                align items: center">
+        <label>Hobbies <i>(Optional)</i></label>
+        <div class="form-inline">
+            <label><input type="checkbox" name="hobbies[]" value="sports"> Sports</label>
+            <label><input type="checkbox" name="hobbies[]" value="movies"> Movies</label>
+            <label><input type="checkbox" name="hobbies[]" value="music"> Music</label>
+        </div>
+    </div>
+    <div class="row" style="text-align: center; box-sizing=border-box; width: 90%; border: 100px dark blue; float: left; align content: center;
+                align items: center">
+        <input type="submit" value="Submit">
+    </div>
+</form>
+</body>
+</html>                            
